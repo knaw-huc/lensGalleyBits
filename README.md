@@ -37,14 +37,14 @@ Functionality for [BITS](https://jats.nlm.nih.gov/extensions/bits/) (Book extens
  
 ### Command line
 
-### OJS 3.2
+#### OJS 3.2
 ```bash
 cd $OJS_PATH/plugins/generic/
 git clone https://github.com/withanage/lensGalleyBits.git lensGalleyBits
 # Set rights for the web-user, if necessary. e.g sudo chown -R www-data:www-data lensGalleyBits/
 ```
 
-### OJS 3.1.2
+#### OJS 3.1.2
 ```bash
 cd $OJS_PATH/plugins/generic/
 git clone https://github.com/withanage/lensGalleyBits.git lensGalleyBits
