@@ -37,7 +37,7 @@ Functionality for [BITS](https://jats.nlm.nih.gov/extensions/bits/) (Book extens
  
 ### Command line
 
-#### OJS 3.2
+### OJS 3.2
 ```bash
 cd $OJS_PATH/plugins/generic/
 git clone https://github.com/withanage/lensGalleyBits.git lensGalleyBits
@@ -68,7 +68,7 @@ git checkout stable-3_1_2
 * Submit your XML file into the journal and enjoy!
 
 ## Feature requests, Bugs
-https://github.com/paflov/lensGalleyBits/issues
+https://github.com/withanage/lensGalleyBits/issues
 
 ## Based on
 https://github.com/asmecher/lensGalley
