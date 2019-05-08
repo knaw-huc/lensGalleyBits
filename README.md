@@ -40,15 +40,15 @@ Functionality for [BITS](https://jats.nlm.nih.gov/extensions/bits/) (Book extens
 #### OJS 3.2
 ```bash
 cd $OJS_PATH/plugins/generic/
-git clone https://github.com/paflov/ojs-plugin-lens-bits.git lensGalleyBits
+git clone https://github.com/withanage/lensGalleyBits.git lensGalleyBits
 # Set rights for the web-user, if necessary. e.g sudo chown -R www-data:www-data lensGalleyBits/
 ```
 
-### OJS 3.1+
+### OJS 3.1.2
 ```bash
 cd $OJS_PATH/plugins/generic/
-git clone https://github.com/paflov/ojs-plugin-lens-bits.git lensGalleyBits
-git checkout lens-bits-ojs-3.1
+git clone https://github.com/withanage/lensGalleyBits.git lensGalleyBits
+git checkout stable-3_1_2 
 # Set rights for the web-user, if necessary. e.g sudo chown -R www-data:www-data lensGalleyBits/
 ```
 ## Configuration
