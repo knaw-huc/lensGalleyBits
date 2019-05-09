@@ -143,7 +143,7 @@ class LensGalleyBitsPlugin extends GenericPlugin {
 	 * @return string
 	 */
 	function getLensPath($request) {
-		return $request->getBaseUrl() . '/' . $this->getPluginPath() . '/lib/lens';
+		return $request->getBaseUrl() . '/' . $this->getPluginPath() . '/libraries/lens';
 	}
 
 	/**
