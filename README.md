@@ -34,6 +34,13 @@ Functionality for [BITS](https://jats.nlm.nih.gov/extensions/bits/) (Book extens
 
 
 ## OJS 3 Installation
+* Settings -> website -> plugins
+
+
+###  Plugin gallery
+
+You can install this plugin in the OJS Plugin gallery.
+
  
 ### Command line
 
