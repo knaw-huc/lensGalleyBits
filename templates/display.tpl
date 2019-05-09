@@ -8,7 +8,7 @@
  * Embedded viewing of a JATS XML galley.
  *}
 
-<script src="{$pluginLensPath}/lib/jquery-3.2.1.js"></script>
+<script src="{$pluginLensPath}/js/jquery-3.2.1.js"></script>
 <script src="{$pluginLensPath}/locales.js"></script>
 <script src="{$pluginLensPath}/lens.js"></script>
 <script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
