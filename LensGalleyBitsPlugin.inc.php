@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2018 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
- * @class LensGalleyPlugin
+ * @class LensGalleyBitsPlugin
  * @ingroup plugins_generic_lensGalley
  *
  * @brief Class for lensGalleyBits plugin
@@ -23,12 +23,32 @@ class LensGalleyBitsPlugin extends GenericPlugin {
 		if (parent::register($category, $path, $mainContextId)) {
 			if ($this->getEnabled()) {
 				HookRegistry::register('ArticleHandler::view::galley', array($this, 'articleCallback'));
+				//HookRegistry::register('ArticleHandler::download', array($this, 'callbackLoadHandler'));
+				HookRegistry::register('LoadHandler', array($this, 'callbackLoadHandler'));
 				HookRegistry::register('IssueHandler::view::galley', array($this, 'issueCallback'));
 				HookRegistry::register('ArticleHandler::download', array($this, 'articleDownloadCallback'), HOOK_SEQUENCE_LATE);
 				$this->_registerTemplateResource();
 			}
 			return true;
 		}
+		return false;
+	}
+
+	/**
+	 * @see PKPPageRouter::route()
+	 */
+	public function callbackLoadHandler($hookName, $args) {
+		$page = $args[0];
+		$op = $args[1];
+
+		switch ("$page/$op") {
+			case 'article/media':
+				define('HANDLER_CLASS', 'LensGalleyBitsHandler');
+				define('LENS_GALLEY_BITS_PLUGIN', $this->getName());
+				$args[2] = $this->getPluginPath() . '/' . 'LensGalleyBitsHandler.inc.php';
+				break;
+		}
+
 		return false;
 	}
 
@@ -143,7 +163,7 @@ class LensGalleyBitsPlugin extends GenericPlugin {
 	 * @return string
 	 */
 	function getLensPath($request) {
-		return $request->getBaseUrl() . '/' . $this->getPluginPath() . '/libraries/lens';
+		return $request->getBaseUrl() . '/' . $this->getPluginPath() . '/libs/lens';
 	}
 
 	/**
