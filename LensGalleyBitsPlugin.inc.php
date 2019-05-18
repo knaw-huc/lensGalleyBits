@@ -23,10 +23,7 @@ class LensGalleyBitsPlugin extends GenericPlugin {
 		if (parent::register($category, $path, $mainContextId)) {
 			if ($this->getEnabled()) {
 				HookRegistry::register('ArticleHandler::view::galley', array($this, 'articleCallback'));
-				//HookRegistry::register('ArticleHandler::download', array($this, 'callbackLoadHandler'));
 				HookRegistry::register('LoadHandler', array($this, 'callbackLoadHandler'));
-				//HookRegistry::register('IssueHandler::view::galley', array($this, 'issueCallback'));
-				//HookRegistry::register('ArticleHandler::download', array($this, 'articleDownloadCallback'), HOOK_SEQUENCE_LATE);
 				$this->_registerTemplateResource();
 			}
 			return true;
