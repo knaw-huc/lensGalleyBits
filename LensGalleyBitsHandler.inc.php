@@ -17,29 +17,6 @@ import('classes.handler.Handler');
 
 class LensGalleyBitsHandler extends Handler {
 	/** @var MarkupPlugin The LensGalleyBits plugin */
-	protected $_plugin;
-
-	/**
-	 * Constructor
-	 */
-	function __construct() {
-		parent::__construct();
-		$this->_plugin = PluginRegistry::getPlugin('generic', LENS_GALLEY_BITS_PLUGIN);
-		$this->addRoleAssignment(
-			array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR, ROLE_ID_ASSISTANT, ROLE_ID_REVIEWER, ROLE_ID_AUTHOR),
-			array('editor', 'json', 'media')
-		);
-	}
-
-	/**
-	 * @copydoc PKPHandler::authorize()
-	 */
-	function authorize($request, &$args, $roleAssignments) {
-		import('lib.pkp.classes.security.authorization.SubmissionFileAccessPolicy');
-		$this->addPolicy(new SubmissionFileAccessPolicy($request, $args, $roleAssignments, SUBMISSION_FILE_ACCESS_READ));
-		return parent::authorize($request, $args, $roleAssignments);
-	}
-
 
 
 	/**
@@ -53,12 +30,17 @@ class LensGalleyBitsHandler extends Handler {
 	public function media($args, $request) {
 		$user = $request->getUser();
 		$context = $request->getContext();
-		$submissionFile = $this->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION_FILE);
+		$galleyId = $request->getUserVar('fileId');
+		$submissionId = $request->getUserVar('submissionId');
+
+		$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO');
+		$galleyDao = DAORegistry::getDAO('ArticleGalleyDAO');
+		$galley = $galleyDao->getByBestGalleyId($galleyId, $submissionId);
+		$submissionFile = $galley->getFile();
 		if (!$submissionFile) {
 			fatalError('Invalid request');
 		}
 
-		$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO');
 		import('lib.pkp.classes.submission.SubmissionFile'); // Constants
 		$dependentFiles = $submissionFileDao->getLatestRevisionsByAssocId(
 			ASSOC_TYPE_SUBMISSION_FILE,
@@ -66,6 +48,7 @@ class LensGalleyBitsHandler extends Handler {
 			$submissionFile->getSubmissionId(),
 			SUBMISSION_FILE_DEPENDENT
 		);
+
 
 		// make sure this is an xml document
 		if (!in_array($submissionFile->getFileType(), array('text/xml', 'application/xml'))) {
