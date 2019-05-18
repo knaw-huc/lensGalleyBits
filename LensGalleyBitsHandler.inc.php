@@ -16,7 +16,6 @@
 import('classes.handler.Handler');
 
 class LensGalleyBitsHandler extends Handler {
-	/** @var MarkupPlugin The LensGalleyBits plugin */
 
 
 	/**
@@ -28,12 +27,11 @@ class LensGalleyBitsHandler extends Handler {
 	 * @return void
 	 */
 	public function media($args, $request) {
-		$user = $request->getUser();
-		$context = $request->getContext();
+
 		$galleyId = $request->getUserVar('fileId');
 		$submissionId = $request->getUserVar('submissionId');
 
-		$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO');
+
 		$galleyDao = DAORegistry::getDAO('ArticleGalleyDAO');
 		$galley = $galleyDao->getByBestGalleyId($galleyId, $submissionId);
 		$submissionFile = $galley->getFile();
@@ -42,6 +40,8 @@ class LensGalleyBitsHandler extends Handler {
 		}
 
 		import('lib.pkp.classes.submission.SubmissionFile'); // Constants
+		$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO');
+
 		$dependentFiles = $submissionFileDao->getLatestRevisionsByAssocId(
 			ASSOC_TYPE_SUBMISSION_FILE,
 			$submissionFile->getFileId(),
