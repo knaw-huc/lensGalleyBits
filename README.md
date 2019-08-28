@@ -63,7 +63,7 @@ git checkout stable-3_1_2
 
 * Click on the tab -> plugins
 
-* Disable the following  plugin, if enable.
+* Disable the following  plugin or any html viewer plugins, if enabled.
 
 ![lens_standard](templates/images/lens_stanard.png)
 
