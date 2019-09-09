@@ -11,7 +11,7 @@
 <script src="{$pluginLensPath}/js/jquery-3.2.1.js"></script>
 <script src="{$pluginLensPath}/locales.js"></script>
 <script src="{$pluginLensPath}/lens.js"></script>
-<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=MML_HTMLorMML-full"></script>
 
 <script type="text/javascript">{literal}
 
