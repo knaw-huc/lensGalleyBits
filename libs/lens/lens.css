@@ -15,6 +15,13 @@
 .content-node.text.focussed {
   background-color: grey; }
 
+.content-node.text.title {
+  padding-left: 0; }
+
+/* Abstract */
+.abstract {
+  margin-bottom: 2.7em; }
+
 /* Paragraph Node
 -------------------------------------------------------------------------------*/
 .content-node.paragraph .content {
@@ -41,22 +48,33 @@
   padding: 0px; }
 
 .content-node.paragraph.margin-top-1 {
-  margin-top: 1em; }
+  margin-top: 1em !important; }
 
 .content-node.paragraph.margin-top-2 {
-  margin-top: 2em; }
+  margin-top: 2em !important; }
 
 .content-node.paragraph.margin-bottom-1 {
-  margin-bottom: 1em; }
+  margin-bottom: 1em !important; }
 
 .content-node.paragraph.margin-bottom-2 {
-  margin-bottom: 2em; }
+  margin-bottom: 2em !important; }
 
 .content-node.paragraph.margin-left-1 {
-  margin-left: 2ex; }
+  margin-left: 2ex;
+  display: block !important; }
 
 .content-node.paragraph.margin-right-1 {
-  margin-right: 2ex; }
+  margin-right: 2ex; 
+  display: block !important; }
+
+.content-node.paragraph.margin-left-2 {
+  margin-left: 4ex; 
+  display: block !important; }
+  
+.content-node.paragraph.margin-right-2 {
+  margin-right: 4ex; 
+  display: block !important; }
+
 
 .content-node.paragraph.centered {
   text-align: center; }
@@ -177,6 +195,16 @@
   display: block !important;
   line-height: 28px !important; }
 
+/*** Abstand zw. zwei aufeinanderfolgenden Paragrafen im Fließtext sowie Unterdrückung dieses Abstands für <p> innerhalb von Tabellen und Zitaten 7.12.18 voe***/
+.content-node.paragraph + .content-node.paragraph {
+  margin-top: 0.7em; }
+
+td > .content-node.paragraph + .content-node.paragraph {
+  margin-top: 0; }
+
+.quote > .content > .paragraph + .paragraph {
+  margin-top: 0 !important; }
+
 /* Heading Node
 -------------------------------------------------------------------------------*/
 .content-node.heading .content {
@@ -186,8 +214,10 @@
   display: inline;
   padding-right: 10px; }
 
-.content-node.heading .title, .content-node.heading .content .title .content {
-  display: inline; }
+.content-node.heading .title, .content-node.heading .content .title .content {         /*war vorher: display: inline, ohne Angabe für line-height - aktuelle Anweisungen eingetragen, um ZAB bei Ausgabe auf Mobilgeräten zu verringern auf Wunsch ak, 13.02.19*/
+  display: inline-block;
+  line-height: 1.3em;
+  margin-top: 0.8em; }
 
 .content-node.heading .content {
   color: rgba(0, 0, 0, 0.8);
@@ -197,11 +227,30 @@
 .content-node.heading.level-1 .content {
   font-size: 24px; }
 
+
+/*.panel.content.document > .surface.resource-view.content > .nodes > .content-node.heading.level-3 - probeweise kürzere Notation '.content-node.heading.level-3' eingesetzt */
+.content-node.heading.level-2,
+.content-node.heading.level-3 {
+  margin-top: 2em;
+}
+
+.content-node.heading.level-2 + .content-node.heading.level-3 {
+  margin-top: 0.7em !important;
+} 
+
 .content-node.heading.level-2 .content {
   font-size: 21px; }
 
 .content-node.heading.level-3 .content {
   font-size: 18px; }
+
+
+
+
+
+
+.panel.content.document > .surface.resource-view.content > .nodes > .content-node.heading.level-4 {
+  padding-top: 20px; }
 
 /* List Node
 -------------------------------------------------------------------------------*/
@@ -388,10 +437,17 @@ Box
 .content-node.quote > .content {
   padding: 20px;
   border-left: 10px solid #ccc; }
+  
+.content-node.quote-right > .content {
+  padding: 20px 0 20px 0;
+  text-align: right; }  
+
+.content-node.quote-right .content-node.paragraph {
+  margin-top: 0;}
 
 .document .content-node.quote .content-node.paragraph {
-  padding: 10px 40px 10px 40px;
-  border-left: 3px solid #ccc; }
+  padding: 0px 20px 0px 20px;
+  /*border-left: 3px solid #ccc; doppelte Ausgabe von Rändern bei Zitaten in Stille, Scholz ... 416/416-69-83162-1-10-20181203.xml*/ }
 
 .surface.content .content-node.quote > .content > .label {
   font-weight: 600;
@@ -451,102 +507,60 @@ Definition
 .content-node.figure div .image-wrapper img {
   width: 100%; }
 
-.lens-article .content-node.html-table > .content {
-  padding: 20px; }
-
-.lens-article .content-node.html-table > .content img {
-  width: 100%; }
-
-.lens-article .content-node.html-table .table-wrapper {
-  width: 100%;
-  overflow: auto; }
-
-.lens-article .content-node.html-table .caption {
-  padding-top: 20px; }
-
-.lens-article .content-node.html-table table {
-  position: relative;
-  border-collapse: collapse;
-  border-spacing: 0;
-  margin-bottom: 20px;
-  margin: 0 auto;
-  width: 100%; }
-
-.lens-article .content-node.html-table thead tr {
-  background: #eee; }
-
-.lens-article .content-node.html-table thead td {
-  font-weight: bold; }
-
-/* Table sub tags */
-.lens-article .content-node.html-table table sub {
-  vertical-align: baseline;
-  position: relative;
-  top: 0.4em;
-  font-size: 11px; }
-
-.lens-article .content-node.html-table table td {
-  padding: 5px;
-  /**font-size: 12px;**/
-  border: 0px solid lightgrey;
-  /* Enable white-space: nowrap; if author controls wrapping (<br> in HTML)
-  /* white-space: nowrap; */ }
-
-.lens-article .content-node.html-table .footers {
+.lens-article .content-node.table .footers {
   padding: 0 20px;
   padding-top: 10px;
   font-size: 12px;
   background: #fff; }
 
 /** Formatierung der Klasse "layout-tabelle" - Layout-Tabelle - , die nur zur Anordnung von Elementen verwendet wird **/
-.lens-article .content-node.html-table .layout-tabelle {
+.layout-tabelle {
   border: 0;
   width: auto;
-  margin-left: 0; }
+  margin: 1em 0 2em 0;
+   }
 
-.lens-article .content-node.html-table .layout-tabelle td {
+.layout-tabelle td {
   border: 0;
   font-size: 1em;
   padding: 3px; }
 
 /** Formatierung der Klasse "gitter-tabelle" - Gitter-Tabelle  **/
-.lens-article .content-node.html-table .gitter-tabelle {
+.gitter-tabelle {
   border: 1px solid lightgray;
   border-collapse: collapse;
   width: auto;
-  margin-left: 0; }
+  margin: 0.5em 0 2em 0;
+   }
 
-.lens-article .content-node.html-table .gitter-tabelle td {
+.gitter-tabelle td {
   border: 1px solid lightgray;
   border-collapse: collapse;
-  padding: 3px; }
-
-/** Layout Daten-Tabelle Issue Nr. 58
- für heiUP auskommentiert, um mehrspaltigen Satz ohne Färbung zu ermöglichen, To do: HTML/CSS-Konstruktion für mehrspaltigen Satz - 09.03. voe - neues default ist layout-tabelle, deshalb testweise wieder einkommentiert - 07.08. voe**/
-.lens-article .content-node.html-table > .content {
-  /* Wie wirkt sich diese klassenunabhängige Anweisung aus? Test! 07.08.. - wenn bis 07.11. keine Verschiebungen bekannt werden, kann Hinweis entfernt werden.*/
-  padding-left: 0; }
-
-.lens-article .content-node.html-table .daten-tabelle {
-  border: 1px solid #f8f8f8;
-  overflow-x: scroll; }
-
-.lens-article .content-node.html-table .daten-tabelle tr {
-  vertical-align: top; }
-
-.lens-article .content-node.html-table .daten-tabelle tr:nth-child(odd) {
-  background-color: #f8f8f8; }
-
-.lens-article .content-node.html-table .daten-tabelle tr:nth-child(odd) td:empty {
-  background-color: #f8f8f8; }
-
-.lens-article .content-node.html-table .daten-tabelle td {
-  border-right: 1px solid #f8f8f8;
   padding: 10px; }
 
-.lens-article .content-node.html-table table td {
-  font-size: 0.75em;
-  line-height: 1.7em; }
+/** Layout Daten-Tabelle Issue Nr. 58
+ für heiUP auskommentiert, um mehrspaltigen Satz ohne Färbung zu ermöglichen, - neues default ist layout-tabelle, deshalb wieder einkommentiert - 07.08. voe**/
+.lens-article .content-node.table > .content {
+  padding-left: 0; }
+
+.daten-tabelle {
+  border: 1px solid #f8f8f8;
+  overflow-x: scroll;
+  margin-top: 0.5em;
+  margin-bottom: 2em; }
+
+.daten-tabelle tr {
+  vertical-align: top; }
+
+.daten-tabelle tr:nth-child(odd) {
+  background-color: #f8f8f8; }
+
+.daten-tabelle tr:nth-child(odd) td:empty {
+  background-color: #f8f8f8; }
+
+.daten-tabelle td {
+  border-right: 1px solid #f8f8f8;
+  padding: 10px; }
 
 .resources .content-node.video .video-wrapper {
   text-align: center;
@@ -652,6 +666,13 @@ Contributor
 .article .resources .nodes > .content-node.publication-info .content-node[data-id=articleinfo] .content-node {
   padding-top: 10px; }
 
+/* Versuch, die Verschiebungen, die sich durch das Float der authors ergeben, direkt am Element zu lösen - wenn es Kollateralschäden gibt, müssen spezifischere Einzelanweisungen an die jew. Verschachtelung gesetzt werden. 09.11.18 voe */
+.authors::after,
+.lens-article .content-node.sec-meta::after {
+  content: "";
+  clear: both;
+  display: table; }
+
 .lens-article .content-node.sec-meta .authors .text {
   float: left;
   padding: 0px;
@@ -686,6 +707,13 @@ Footnotes
 
 .lens-article .content-node.footnote .content .footnote-urls .url {
   padding-right: 20px; }
+
+.lens-article .content-node.footnote .content .table {
+  border-collapse: collapse;
+  width: 100%; }
+
+.lens-article .content-node.footnote .content .table th, td {
+  padding: 1px; }
 
 .footnote_reference > span.superscript {
   font-size: 12px;
@@ -794,7 +822,7 @@ out (on iOS 5.1), or flicker (on iOS 6). */
   float: left;
   overflow: hidden;
   height: 100%;
-  width: 70%;
+  width: 60%;
   border-right: 1px solid #ddd; }
 
 .article .document .surface.content {
@@ -842,8 +870,8 @@ out (on iOS 5.1), or flicker (on iOS 6). */
   line-height: 40px;
   color: rgba(0, 0, 0, 0.4);
   border-right: 1px solid #ddd;
-  padding-right: 15px;
-  padding-left: 15px; }
+  padding-right: 10px;
+  padding-left: 10px; }
 
 .menu-bar .context-toggles a.context-toggle.hidden {
   display: none; }
@@ -863,7 +891,7 @@ out (on iOS 5.1), or flicker (on iOS 6). */
 .article .resources {
   float: right;
   line-height: 25px;
-  width: 30%;
+  width: 40%;
   height: 100%;
   padding-left: 50px;
   padding-right: 50px;
@@ -879,8 +907,8 @@ out (on iOS 5.1), or flicker (on iOS 6). */
   left: 0px;
   right: 0px;
   /*  overflow-y: scroll;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;*/ }
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;*/ }
 
 .article .resources .surface {
   position: absolute;
@@ -1032,15 +1060,16 @@ article .resources .footnotes .content-node.highlighted .resource-header .toggle
 ----------------------------------------------------------------------- */
 .article span.annotation {
   /*  -webkit-transition-property: background, color;
-  -moz-transition-property: background, color;
-  transition-property: background, color;
+      -moz-transition-property: background, color;
+      transition-property: background, color;
 
-  -webkit-transition-duration: 0.1s;
-  -moz-transition-duration: 0.1s;
-  transition-duration: 0.1s;*/ }
+      -webkit-transition-duration: 0.1s;
+      -moz-transition-duration: 0.1s;
+      transition-duration: 0.1s;*/ }
 
 /* Small caps */
-span.annotation.sc {
+span.annotation.sc,
+span.annotation.capitalize {
   font-variant: small-caps; }
 
 span.annotation.formula_reference, span.publication_reference {
@@ -1133,7 +1162,7 @@ span.annotation.formula_reference, span.publication_reference {
   font-weight: bold; }
 
 .content-node .capitalize {
-  text-transform: uppercase; }
+  /*text-transform: uppercase;*/ }
 
 .content-node .figure_reference {
   background: rgba(153, 0, 0, 0.15);
@@ -1260,7 +1289,7 @@ span.annotation.formula_reference, span.publication_reference {
   right: 0px;
   width: 20px;
   overflow: hidden;
-  background: #fff; }
+  background: #eee; }
 
 /* Disable native scrollbar for resources except TOC */
 .article .resources .panel::-webkit-scrollbar,
@@ -1318,7 +1347,7 @@ as we have a plugin concept for functionality / panels */
 
 /* Active resource */
 .article .resources .content-node.highlighted .resource-header .name {
-  color: #fff; }
+  color: #888; }
 
 /* active citation */
 .article .resources .citations .content-node.highlighted {
@@ -1439,7 +1468,7 @@ TOC
 .surface-scrollbar {
   background: #eee;
   position: absolute;
-  left: 0px;
+  right: 0px;
   width: 20px;
   top: 0px;
   bottom: 0px; }
@@ -1505,13 +1534,6 @@ TOC
 .panel.document .nodes > .content-node > .focus-handle:hover {
   border-left: 3px solid #bbb; }
 
-/** Ticket#66 ***/
-.panel.content.document > .surface.resource-view.content > .nodes > .content-node.heading.level-3 {
-  padding-top: 20px; }
-
-.panel.content.document > .surface.resource-view.content > .nodes > .content-node.heading.level-4 {
-  padding-top: 20px; }
-
 /** Listen **/
 .content.simple {
   list-style-type: none; }
@@ -1539,6 +1561,28 @@ ol.content.ordered {
 .content.greek-upper {
   list-style-type: upper-greek; }
 
+.content.dash {
+  list-style-type: none;
+  padding-left: 20px; }
+
+.content.dash li {
+  background: url("../images/list-style-dash.png") no-repeat left 0.82em; }
+
+.content.dash li > .content-node.paragraph {
+  padding-left: 20px; }
+
+/* Workaround Aufzählungszeichen 'mdash' - Einrückung der zweiten Zeile schlägt fehl .content.dash {
+  list-style-type: none;
+}
+
+.content.dash li::before {
+  content: "\002014";
+  padding-right: 6px;
+}
+.content.dash li > .content-node.paragraph,
+.content.dash li > .content-node.paragraph > .content {
+  display: inline;
+} */
 /*
   Typography / Basics
 ---------------------------------------------*/
