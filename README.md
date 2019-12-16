@@ -54,7 +54,6 @@ git clone https://github.com/withanage/lensGalleyBits.git lensGalleyBits
 ```bash
 cd $OJS_PATH/plugins/generic/
 git clone https://github.com/withanage/lensGalleyBits.git lensGalleyBits
-git checkout stable-3_1_2 
 # Set rights for the web-user, if necessary. e.g sudo chown -R www-data:www-data lensGalleyBits/
 ```
 ## Configuration
