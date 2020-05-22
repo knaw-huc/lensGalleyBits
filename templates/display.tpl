@@ -8,7 +8,7 @@
  * Embedded viewing of a JATS XML galley.
  *}
 
-<script src="{$pluginLensPath}/js/jquery-3.2.1.js"></script>
+<script src="https://www.ub.uni-heidelberg.de/cdn/jquery/3.2.1/jquery.js"></script>
 <script src="{$pluginLensPath}/locales.js"></script>
 <script src="{$pluginLensPath}/lens.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=MML_HTMLorMML-full"></script>
@@ -23,7 +23,7 @@
 	$(document).ready(function(){
 		History.started = false;
 		console.log("!");
-		var app = new Lens({
+		let app = new Lens({
 			document_url: "{/literal}{$xmlUrl|escape:'javascript'}{literal}"
 		});
 		app.start();
