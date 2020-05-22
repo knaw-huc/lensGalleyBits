@@ -163,98 +163,7 @@ class LensGalleyBitsPlugin extends GenericPlugin {
 		return $request->getBaseUrl() . '/' . $this->getPluginPath() . '/libs/lens';
 	}
 
-	/**
-	 * Present rewritten XML.
-	 * @param string $hookName
-	 * @param array $args
-	 */
-	function articleDownloadCallback($hookName, $args) {
-		$article =& $args[0];
-		$galley =& $args[1];
-		$fileId =& $args[2];
-		$request = Application::getRequest();
 
-		if ($galley && $galley->getFileType() == 'application/xml' && $galley->getFileId() == $fileId) {
-			if (!HookRegistry::call('LensGalleyPlugin::articleDownload', array($article,  &$galley, &$fileId))) {
-				$xmlContents = $this->_getXMLContents($request, $galley);
-				header('Content-Type: application/xml');
-				header('Content-Length: ' . strlen($xmlContents));
-				header('Content-Disposition: inline');
-				header('Cache-Control: private');
-				header('Pragma: public');
-				echo $xmlContents;
-				$returner = true;
-				HookRegistry::call('LensGalleyPlugin::articleDownloadFinished', array(&$returner));
-			}
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Return string containing the contents of the XML file.
-	 * This function performs any necessary filtering, like image URL replacement.
-	 * @param $request PKPRequest
-	 * @param $galley ArticleGalley
-	 * @return string
-	 */
-	function _getXMLContents($request, $galley) {
-		$journal = $request->getJournal();
-		$submissionFile = $galley->getFile();
-		$contents = file_get_contents($submissionFile->getFilePath());
-
-		// Replace media file references
-		$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO');
-		import('lib.pkp.classes.submission.SubmissionFile'); // Constants
-		$embeddableFiles = array_merge(
-			$submissionFileDao->getLatestRevisions($submissionFile->getSubmissionId(), SUBMISSION_FILE_PROOF),
-			$submissionFileDao->getLatestRevisionsByAssocId(ASSOC_TYPE_SUBMISSION_FILE, $submissionFile->getFileId(), $submissionFile->getSubmissionId(), SUBMISSION_FILE_DEPENDENT)
-		);
-		$referredArticle = null;
-		$articleDao = DAORegistry::getDAO('ArticleDAO');
-		foreach ($embeddableFiles as $embeddableFile) {
-			// Ensure that the $referredArticle object refers to the article we want
-			if (!$referredArticle || $referredArticle->getId() != $galley->getSubmissionId()) {
-				$referredArticle = $articleDao->getById($galley->getSubmissionId());
-			}
-			$fileUrl = $request->url(null, 'article', 'download', array($referredArticle->getBestArticleId(), $galley->getBestGalleyId(), $embeddableFile->getFileId()));
-			$pattern = preg_quote($embeddableFile->getOriginalFileName());
-
-			$contents = preg_replace(
-				$pattern='/([Ss][Rr][Cc]|[Hh][Rr][Ee][Ff]|[Dd][Aa][Tt][Aa])\s*=\s*"([^"]*' . $pattern . ')"/',
-				'\1="' . $fileUrl . '"',
-				$contents
-			);
-		}
-
-		// Perform replacement for ojs://... URLs
-		$contents = preg_replace_callback(
-			'/(<[^<>]*")[Oo][Jj][Ss]:\/\/([^"]+)("[^<>]*>)/',
-			array($this, '_handleOjsUrl'),
-			$contents
-		);
-
-		// Perform variable replacement for journal, issue, site info
-		$issueDao = DAORegistry::getDAO('IssueDAO');
-		$issue = $issueDao->getByArticleId($galley->getSubmissionId());
-
-		$journal = $request->getJournal();
-		$site = $request->getSite();
-
-		$paramArray = array(
-			'issueTitle' => $issue?$issue->getIssueIdentification():__('editor.article.scheduleForPublication.toBeAssigned'),
-			'journalTitle' => $journal->getLocalizedName(),
-			'siteTitle' => $site->getLocalizedTitle(),
-			'currentUrl' => $request->getRequestUrl()
-		);
-
-		foreach ($paramArray as $key => $value) {
-			$contents = str_replace('{$' . $key . '}', $value, $contents);
-		}
-
-		return $contents;
-	}
 
 	function _handleOjsUrl($matchArray) {
 		$request = Application::getRequest();
@@ -327,6 +236,8 @@ class LensGalleyBitsPlugin extends GenericPlugin {
 		}
 		return $matchArray[1] . $url . $matchArray[3];
 	}
+
+
 }
 
 ?>

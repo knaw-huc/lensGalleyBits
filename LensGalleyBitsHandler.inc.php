@@ -18,6 +18,32 @@ import('classes.handler.Handler');
 class LensGalleyBitsHandler extends Handler {
 
 
+	function __construct() {
+
+		parent::__construct();
+
+		$this->_plugin = PluginRegistry::getPlugin('generic', LENS_GALLEY_BITS_PLUGIN);
+		$this->addRoleAssignment(
+			array(ROLE_ID_MANAGER, ROLE_ID_SUB_EDITOR, ROLE_ID_ASSISTANT, ROLE_ID_REVIEWER, ROLE_ID_AUTHOR,ROLE_ID_READER),
+			array('media')
+		);
+	}
+
+	function initialize($request) {
+
+		parent::initialize($request);
+		$this->submission = $this->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION);
+	}
+
+	function authorize($request, &$args, $roleAssignments) {
+		import('lib.pkp.classes.security.authorization.SubmissionFileAccessPolicy');
+		$this->addPolicy(new SubmissionFileAccessPolicy($request, $args, $roleAssignments, SUBMISSION_FILE_ACCESS_READ));
+		return parent::authorize($request, $args, $roleAssignments);
+	}
+
+
+
+
 	/**
 	 * display images attached to XML document
 	 *
@@ -27,28 +53,21 @@ class LensGalleyBitsHandler extends Handler {
 	 * @return void
 	 */
 	public function media($args, $request) {
-
-		$galleyId = $request->getUserVar('fileId');
-		$submissionId = $request->getUserVar('submissionId');
-
-
-		$galleyDao = DAORegistry::getDAO('ArticleGalleyDAO');
-		$galley = $galleyDao->getByBestGalleyId($galleyId, $submissionId);
-		$submissionFile = $galley->getFile();
+		$user = $request->getUser();
+		$context = $request->getContext();
+		$submissionFile = $this->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION_FILE);
 		if (!$submissionFile) {
 			fatalError('Invalid request');
 		}
 
-		import('lib.pkp.classes.submission.SubmissionFile'); // Constants
 		$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO');
-
+		import('lib.pkp.classes.submission.SubmissionFile'); // Constants
 		$dependentFiles = $submissionFileDao->getLatestRevisionsByAssocId(
 			ASSOC_TYPE_SUBMISSION_FILE,
 			$submissionFile->getFileId(),
 			$submissionFile->getSubmissionId(),
 			SUBMISSION_FILE_DEPENDENT
 		);
-
 
 		// make sure this is an xml document
 		if (!in_array($submissionFile->getFileType(), array('text/xml', 'application/xml'))) {
