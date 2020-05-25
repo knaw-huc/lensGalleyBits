@@ -193,7 +193,7 @@ class LensGalleyBitsPlugin extends GenericPlugin {
 	 * @return string
 	 */
 	function _getXMLContents($request, $galley) {
-		$journal = $request->getJournal();
+
 		$submissionFile = $galley->getFile();
 		$contents = file_get_contents($submissionFile->getFilePath());
 
@@ -205,7 +205,7 @@ class LensGalleyBitsPlugin extends GenericPlugin {
 			$submissionFileDao->getLatestRevisionsByAssocId(ASSOC_TYPE_SUBMISSION_FILE, $submissionFile->getFileId(), $submissionFile->getData('submissionId'), SUBMISSION_FILE_DEPENDENT)
 		);
 
-		$submissionDao = Application::getSubmissionDAO();
+
 
 		foreach ($embeddableFiles as $embeddableFile) {
 
