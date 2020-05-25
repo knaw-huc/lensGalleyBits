@@ -68,13 +68,13 @@ class LensGalleyBitsPlugin extends GenericPlugin {
 
 		$templateMgr = TemplateManager::getManager($request);
 		if ($galley && in_array($galley->getFileType(), array('application/xml', 'text/xml'))) {
-			/*$galleyPublication = null;
+			$galleyPublication = null;
 			foreach ($submission->getData('publications') as $publication) {
 				if ($publication->getId() === $galley->getData('publicationId')) {
 					$galleyPublication = $publication;
 					break;
 				}
-			}*/
+			}
 			$templateMgr->assign(array(
 				'pluginLensPath' => $this->getLensPath($request),
 				'displayTemplatePath' => $this->getTemplateResource('display.tpl'),
@@ -82,10 +82,9 @@ class LensGalleyBitsPlugin extends GenericPlugin {
 				'galleyFile' => $galley->getFile(),
 				'issue' => $issue,
 				'article' => $submission,
-				'bestId' => $submission->getId(),
+				'bestId' => $submission->getBestId(),
 				'isLatestPublication' => $submission->getData('currentPublicationId') === $galley->getData('publicationId'),
-				/*'galleyPublication' => $galleyPublication,*/
-				'galleyPublication' => $galley,
+				'galleyPublication' => $galleyPublication,
 				'galley' => $galley,
 				'jQueryUrl' => $this->_getJQueryUrl($request),
 			));
@@ -165,7 +164,7 @@ class LensGalleyBitsPlugin extends GenericPlugin {
 		$article =& $args[0];
 		$galley =& $args[1];
 		$fileId =& $args[2];
-		$request = Application::getRequest();
+		$request = Application::get()->getRequest();
 
 		if ($galley && in_array($galley->getFileType(), array('application/xml', 'text/xml')) && $galley->getFileId() == $fileId) {
 			if (!HookRegistry::call('LensGalleyBitsPlugin::articleDownload', array($article,  &$galley, &$fileId))) {
@@ -193,7 +192,7 @@ class LensGalleyBitsPlugin extends GenericPlugin {
 	 * @return string
 	 */
 	function _getXMLContents($request, $galley) {
-
+		$journal = $request->getJournal();
 		$submissionFile = $galley->getFile();
 		$contents = file_get_contents($submissionFile->getFilePath());
 
@@ -204,12 +203,16 @@ class LensGalleyBitsPlugin extends GenericPlugin {
 			$submissionFileDao->getLatestRevisions($submissionFile->getData('submissionId'), SUBMISSION_FILE_PROOF),
 			$submissionFileDao->getLatestRevisionsByAssocId(ASSOC_TYPE_SUBMISSION_FILE, $submissionFile->getFileId(), $submissionFile->getData('submissionId'), SUBMISSION_FILE_DEPENDENT)
 		);
-
-
-
+		$referredArticle = $referredPublication = null;
+		$submissionDao = DAORegistry::getDAO('SubmissionDAO');
+		$publicationService = Services::get('publication');
 		foreach ($embeddableFiles as $embeddableFile) {
-
-			$fileUrl = $request->url(null, 'article', 'download', array($galley->getSubmissionId(), $galley->getId(), $embeddableFile->getFileId()));
+			// Ensure that the $referredArticle object refers to the article we want
+			if (!$referredArticle || !$referredPublication || $referredPublication->getData('submissionId') != $referredArticle->getId() || $referredPublication->getId() != $galley->getData('publicationId')) {
+				$referredPublication = $publicationService->get($galley->getData('publicationId'));
+				$referredArticle = $submissionDao->getById($referredPublication->getData('submissionId'));
+			}
+			$fileUrl = $request->url(null, 'article', 'download', array($referredArticle->getBestArticleId(), $galley->getBestGalleyId(), $embeddableFile->getFileId()));
 			$pattern = preg_quote($embeddableFile->getOriginalFileName());
 
 			$contents = preg_replace(
@@ -228,8 +231,7 @@ class LensGalleyBitsPlugin extends GenericPlugin {
 
 		// Perform variable replacement for journal, issue, site info
 		$issueDao = DAORegistry::getDAO('IssueDAO');
-		$context = Application::getRequest()->getContext();
-		$issue = $issueDao->getByArticleId($galley->getData('submissionId'), $context->getId());
+		$issue = $issueDao->getBySubmissionId($galley->getData('submissionId'));
 
 		$journal = $request->getJournal();
 		$site = $request->getSite();
