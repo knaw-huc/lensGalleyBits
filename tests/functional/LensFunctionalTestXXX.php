@@ -13,7 +13,8 @@
  * @brief Functional tests for the static pages plugin.
  */
 
-import('tests.ContentBaseTestCase');
+
+import('lib.pkp.tests.functional.plugins.importexport.FunctionalImportExportBaseTestCase');
 
 class LensFunctionalTest extends ContentBaseTestCase {
 	/**
