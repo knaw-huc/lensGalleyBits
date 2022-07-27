@@ -176,7 +176,7 @@ class LensGalleyBitsPlugin extends GenericPlugin {
 				header('Pragma: public');
 				echo $xmlContents;
 				$returner = true;
-				HookRegistry::call('LensGalleyBitsPlugin::articleDownloadFinished', array(&$returner));
+				HookRegistry::call('LensGalleyPlugin::articleDownloadFinished', array(&$returner));
 			}
 			return true;
 		}
