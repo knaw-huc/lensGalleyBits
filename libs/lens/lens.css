@@ -488,7 +488,7 @@ Definition
 
 /** Formatierung der Klasse "layout-tabelle" - Layout-Tabelle - , die nur zur Anordnung von Elementen verwendet wird **/
 .layout-tabelle {
-  border: 1em;
+  border: 0;
   width: auto;
   margin-left: 0; }
 
@@ -501,7 +501,7 @@ Definition
 .gitter-tabelle {
   border: 1px solid lightgray;
   border-collapse: collapse;
-  width: 100%;
+  width: auto;
   margin-left: 0; }
 
 .gitter-tabelle td {
