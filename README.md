@@ -1,6 +1,13 @@
 # OJS3  Lens-viewer plugin for [JATS](https://jats.nlm.nih.gov/archiving/) and [BITS](https://jats.nlm.nih.gov/extensions/bits/).
 
-This plugin intergrates an enhanced Version of the Lens Viewer which  supports BITS extensions.
+This plugin integrates an enhanced Version of the Lens Viewer which  supports BITS extensions.
+
+# OJS 3.3.0.7 compatibility
+
+See [this post](https://forum.pkp.sfu.ca/t/lensgalleybits-plugin-is-not-compatible-with-ojs-3-3/68398/8) for replacement of LensGalleyBitsPlugin.inc.php.
+
+Removed non-existing constant `CDN_JQUERY_VERSION` to make it work.
+
 
 # Description
 
