@@ -8,6 +8,7 @@ See [this post](https://forum.pkp.sfu.ca/t/lensgalleybits-plugin-is-not-compatib
 
 Removed non-existing constant `CDN_JQUERY_VERSION` to make it work.
 
+Added .po files in locale for OJS 3.3 compatibility.
 
 # Description
 

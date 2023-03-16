@@ -1,0 +1,6 @@
+.idea
+.DS_Store
+cache
+ci_sessions
+logs
+templates_c
