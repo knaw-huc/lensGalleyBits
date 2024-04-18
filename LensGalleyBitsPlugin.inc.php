@@ -13,7 +13,7 @@
  * @brief Class for lensGalleyBits plugin
  */
 
-namespace APP\plugins\generic\lensGalley;
+namespace APP\plugins\generic\lensGalleyBits;
 
 use APP\core\Application;
 use APP\core\Request;
@@ -199,7 +199,7 @@ class LensGalleyBitsPlugin extends \PKP\plugins\GenericPlugin
         $request = Application::get()->getRequest();
 
         if ($galley && in_array($galley->getFileType(), ['application/xml', 'text/xml']) && $galley->getData('submissionId') == $fileId) {
-            if (!Hook::run('LensGalleyPlugin::articleDownload', [[$article, &$galley, &$fileId]])) {
+            if (!Hook::run('LensGalleyBitsPlugin::articleDownload', [[$article, &$galley, &$fileId]])) {
                 $xmlContents = $this->_getXMLContents($request, $galley);
                 header('Content-Type: application/xml');
                 header('Content-Length: ' . strlen($xmlContents));

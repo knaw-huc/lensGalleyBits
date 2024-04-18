@@ -15,4 +15,4 @@ msgid "plugins.generic.lensGalleyBits.displayName"
 msgstr "eLife Lens Viewer for Monographs and Journal articles (HuC version)"
 
 msgid "plugins.generic.lensGalleyBits.description"
-msgstr "enhanced eLife Lens Article Viewer with additional support for Monograpsh and edited volumes "
+msgstr "enhanced eLife Lens Article Viewer with additional support for Monographh and edited volumes "
